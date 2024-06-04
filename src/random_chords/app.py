@@ -1,4 +1,3 @@
-
 import streamlit as st
 import random
 from music21 import note, interval, chord, stream
@@ -31,10 +30,10 @@ def generate_random_chord():
     return chord_name, chord_note
 
 # Create a music stream and add random chords
-def create_music_stream():
+def create_music_stream(num_chords=10):
     music_stream = stream.Stream()
 
-    for _ in range(8):  # Generating 8 random chords
+    for _ in range(num_chords):  # Generating 8 random chords
         chord_name, chord_note = generate_random_chord()
         chord_note.lyric = chord_name
         music_stream.append(chord_note)
@@ -42,21 +41,23 @@ def create_music_stream():
     return music_stream
 
 # Save the music stream as an image
-def save_music_stream_as_image(music_stream, file_path='./output/random_chords.png'):
+def save_music_stream_as_image(music_stream, file_path):
     music_stream.write('musicxml.png', fp=file_path)
+
 
 st.title("Random Chord Generator")
 
 if st.button('Generate Chords'):
-    music_stream = create_music_stream()
-    chords = [chord.lyric for chord in music_stream]
-    st.write('Generated Chords:')
-    st.write(chords)
-    
+    # Create a music stream
+    music_stream = create_music_stream(num_chords=50)
+
     # Save the music stream as a PNG image
-    image_path = './output/random_chords-1.png'
+    folder = './output'
+    filename = 'random_chords'
+    image_path = f'{folder}/{filename}.png'
     save_music_stream_as_image(music_stream, image_path)
     
     # Display the image
+    image_path = f'{folder}/{filename}-1.png'
     image = Image.open(image_path)
     st.image(image, caption='Generated Chords', use_column_width=True)

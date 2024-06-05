@@ -1,10 +1,11 @@
 import streamlit as st
 import random
-from music21 import note, interval, chord, stream
+from music21 import note, interval, chord, stream, environment
 from PIL import Image
 import subprocess
 
 
+environment.set('musescoreDirectPNGPath', '/usr/bin/mscore')
 
 # subprocess.run(["chmod", "+x", "/mount/src/random-chord-generator/src/random_chords/musescore_setup.sh"])
 # subprocess.run(["/mount/src/random-chord-generator/src/random_chords/musescore_setup.sh"], shell=True)

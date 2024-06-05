@@ -6,8 +6,8 @@ import subprocess
 
 
 
-subprocess.run(["chmod", "+x", "/mount/src/random-chord-generator/src/random_chords/musescore_setup.sh"])
-subprocess.run(["/mount/src/random-chord-generator/src/random_chords/musescore_setup.sh"], shell=True)
+# subprocess.run(["chmod", "+x", "/mount/src/random-chord-generator/src/random_chords/musescore_setup.sh"])
+# subprocess.run(["/mount/src/random-chord-generator/src/random_chords/musescore_setup.sh"], shell=True)
 
 chord_roots = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 interval_dict = {

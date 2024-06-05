@@ -1,5 +1,6 @@
+output/
 templates/
 *.ini
 mz.ipynb
 mz.py
-
+musescore_setup.sh

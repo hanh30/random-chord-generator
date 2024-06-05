@@ -2,6 +2,10 @@ import streamlit as st
 import random
 from music21 import note, interval, chord, stream
 from PIL import Image
+import subprocess
+
+
+subprocess.run(["musescore_setup.sh"], shell=True)
 
 
 chord_roots = ['C', 'D', 'E', 'F', 'G', 'A', 'B']

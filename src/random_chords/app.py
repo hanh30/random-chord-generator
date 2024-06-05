@@ -5,7 +5,7 @@ from PIL import Image
 import subprocess
 
 
-subprocess.run(["musescore_setup.sh"], shell=True)
+subprocess.run(["./musescore_setup.sh"], shell=True)
 
 
 chord_roots = ['C', 'D', 'E', 'F', 'G', 'A', 'B']

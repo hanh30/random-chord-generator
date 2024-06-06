@@ -73,7 +73,8 @@ chord_roots_filter = st.multiselect(
 
 interval_dict_key_filter = st.multiselect(
     "Select chord type:",
-    interval_dict.keys()
+    interval_dict.keys(),
+    default=['', 'm']
 )
 
 interval_dict_filter = {k:v for (k, v) in interval_dict.items() if k in interval_dict_key_filter}

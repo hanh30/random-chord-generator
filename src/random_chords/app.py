@@ -102,20 +102,16 @@ if st.button('Generate Chords'):
     image_path = f'{folder}/{filename}-1.png'
     image_path_lyric = f'{folder}/{filename}_lyric-1.png'
 
-    # def show_image():
-    #     if not st.session_state.toggle:
-    #         image = Image.open(image_path)
-    #         st.image(image, use_column_width=True)
-    #     else:
-    #         image_lyric = Image.open(image_path_lyric)
-    #         st.image(image_lyric, use_column_width=True)
-
-    on = st.toggle("Show chord names", key='toggle')
     image = Image.open(image_path)
+    image_lyric = Image.open(image_path_lyric)
+
+    def show_image():
+        if not st.session_state.toggle:
+            imageLocation.image(image)
+        else:
+            imageLocation.image(image_lyric)
+
+    on = st.toggle("Show chord names", key='toggle', on_change=show_image)
     imageLocation = st.empty()
     imageLocation.image(image)
     
-    if on:
-        image_lyric = Image.open(image_path_lyric)
-        imageLocation.image(image_lyric)
-

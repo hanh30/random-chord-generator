@@ -58,7 +58,7 @@ def create_music_stream(chord_roots, interval_dict, num_chords=10):
         chord_note.inversion(random.choice(np.arange(len(chord_note))))
         music_stream.append(chord_note)
 
-        chord_note_lyric = chord_note
+        chord_note_lyric = chord_note.copy()
         chord_note_lyric.lyric = chord_name
         music_stream_lyric.append(chord_note_lyric)        
 
@@ -107,5 +107,5 @@ if st.button('Generate Chords'):
         image = Image.open(image_path)
         st.image(image, use_column_width=True)
     else:
-        image = Image.open(image_path_lyric)
-        st.image(image, use_column_width=True)
+        image_lyric = Image.open(image_path_lyric)
+        st.image(image_lyric, use_column_width=True)

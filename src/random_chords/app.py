@@ -1,8 +1,9 @@
 import streamlit as st
 import random
-from music21 import note, interval, chord, stream, environment
+from music21 import note, interval, chord, meter, stream, environment
 from PIL import Image
 import os
+import numpy as np
 # import subprocess
 
 # os.system('Xvfb :1 -screen 0 1600x1200x16  &')    # create virtual display with size 1600x1200 and 16 bit color. Color can be changed to 24 or 8
@@ -17,6 +18,7 @@ os.environ['QT_QPA_PLATFORM'] = 'offscreen'
 # subprocess.run(["/mount/src/random-chord-generator/src/random_chords/musescore_setup.sh"], shell=True)
 
 chord_roots = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
+pitch_list = ['2', '3']
 interval_dict = {
     '': ['M3', 'P5'],
     'm': ['m3', 'P5'],
@@ -33,10 +35,12 @@ def generate_random_chord(chord_roots, interval_dict):
     chord_str = random.choice(list(interval_dict.keys()))
     chord_name = root_str + chord_str
 
-    root = note.Note(root_str)
+    pitch_str = random.choice(pitch_list)
+    root = note.Note(root_str + pitch_str)
     note_list = [root]
     for i in interval_dict[chord_str]:
         note_list.append(interval.transposeNote(root, i))
+    random.shuffle(note_list)
     chord_note = chord.Chord(note_list)
 
     return chord_name, chord_note
@@ -44,9 +48,11 @@ def generate_random_chord(chord_roots, interval_dict):
 # Create a music stream and add random chords
 def create_music_stream(chord_roots, interval_dict, num_chords=10):
     music_stream = stream.Stream()
+    music_stream.timeSignature = meter.TimeSignature('1/4')
 
     for _ in range(num_chords):  # Generating 8 random chords
         chord_name, chord_note = generate_random_chord(chord_roots, interval_dict)
+        chord_note.inversion(random.choice(np.arange(len(chord_note))))
         chord_note.lyric = chord_name
         music_stream.append(chord_note)
 
@@ -59,14 +65,22 @@ def save_music_stream_as_image(music_stream, file_path):
 
 st.title("Random Chord Generator")
 
-options = st.multiselect(
+chord_roots_filter = st.multiselect(
     "Select chord roots:",
-    chord_roots
+    chord_roots,
+    default=chord_roots
 )
+
+interval_dict_key_filter = st.multiselect(
+    "Select chord type:",
+    interval_dict.keys()
+)
+
+interval_dict_filter = {k:v for (k, v) in interval_dict.items() if k in interval_dict_key_filter}
 
 if st.button('Generate Chords'):
     # Create a music stream
-    music_stream = create_music_stream(chord_roots=options, interval_dict=interval_dict, num_chords=50)
+    music_stream = create_music_stream(chord_roots=chord_roots_filter, interval_dict=interval_dict_filter, num_chords=50)
 
     # Save the music stream as a PNG image
     folder = './output'

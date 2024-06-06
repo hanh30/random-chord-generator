@@ -4,6 +4,7 @@ from music21 import note, interval, chord, meter, stream, environment
 from PIL import Image
 import os
 import numpy as np
+from copy import deepcopy
 # import subprocess
 
 # os.system('Xvfb :1 -screen 0 1600x1200x16  &')    # create virtual display with size 1600x1200 and 16 bit color. Color can be changed to 24 or 8
@@ -42,6 +43,7 @@ def generate_random_chord(chord_roots, interval_dict):
         note_list.append(interval.transposeNote(root, i))
     random.shuffle(note_list)
     chord_note = chord.Chord(note_list)
+    chord_note.inversion(random.choice(np.arange(len(chord_note))))
 
     return chord_name, chord_note
 
@@ -55,10 +57,9 @@ def create_music_stream(chord_roots, interval_dict, num_chords=10):
 
     for _ in range(num_chords):  # Generating 8 random chords
         chord_name, chord_note = generate_random_chord(chord_roots, interval_dict)
-        chord_note.inversion(random.choice(np.arange(len(chord_note))))
         music_stream.append(chord_note)
 
-        chord_note_lyric = chord_note.copy()
+        chord_note_lyric = deepcopy(chord_note)
         chord_note_lyric.lyric = chord_name
         music_stream_lyric.append(chord_note_lyric)        
 

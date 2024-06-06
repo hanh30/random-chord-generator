@@ -28,7 +28,7 @@ interval_dict = {
 }
 
 # Function to generate a random chord
-def generate_random_chord():
+def generate_random_chord(chord_roots, interval_dict):
     root_str = random.choice(chord_roots)
     chord_str = random.choice(list(interval_dict.keys()))
     chord_name = root_str + chord_str
@@ -42,11 +42,11 @@ def generate_random_chord():
     return chord_name, chord_note
 
 # Create a music stream and add random chords
-def create_music_stream(num_chords=10):
+def create_music_stream(chord_roots, interval_dict, num_chords=10):
     music_stream = stream.Stream()
 
     for _ in range(num_chords):  # Generating 8 random chords
-        chord_name, chord_note = generate_random_chord()
+        chord_name, chord_note = generate_random_chord(chord_roots, interval_dict)
         chord_note.lyric = chord_name
         music_stream.append(chord_note)
 
@@ -59,9 +59,14 @@ def save_music_stream_as_image(music_stream, file_path):
 
 st.title("Random Chord Generator")
 
+options = st.multiselect(
+    "Select chord roots:",
+    chord_roots
+)
+
 if st.button('Generate Chords'):
     # Create a music stream
-    music_stream = create_music_stream(num_chords=50)
+    music_stream = create_music_stream(chord_roots=options, interval_dict=interval_dict, num_chords=50)
 
     # Save the music stream as a PNG image
     folder = './output'
@@ -72,4 +77,4 @@ if st.button('Generate Chords'):
     # Display the image
     image_path = f'{folder}/{filename}-1.png'
     image = Image.open(image_path)
-    st.image(image, caption='Generated Chords', use_column_width=True)
+    st.image(image, use_column_width=True)

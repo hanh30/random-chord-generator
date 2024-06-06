@@ -112,9 +112,10 @@ if st.button('Generate Chords'):
 
     on = st.toggle("Show chord names", key='toggle')
     image = Image.open(image_path)
-    st.image(image, use_column_width=True)
+    imageLocation = st.empty()
+    imageLocation.image(image)
     
     if on:
         image_lyric = Image.open(image_path_lyric)
-        st.image(image_lyric, use_column_width=True)
-        
+        imageLocation.image(image_lyric)
+

@@ -111,5 +111,6 @@ if st.button('Generate Chords'):
             st.image(image_lyric, use_column_width=True)
 
     st.toggle("Show chord names", key='toggle', on_change=show_image)
-    
+    image = Image.open(image_path)
+    st.image(image, use_column_width=True)
     

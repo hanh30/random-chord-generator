@@ -49,14 +49,20 @@ def generate_random_chord(chord_roots, interval_dict):
 def create_music_stream(chord_roots, interval_dict, num_chords=10):
     music_stream = stream.Stream()
     music_stream.timeSignature = meter.TimeSignature('1/4')
+    
+    music_stream_lyric = stream.Stream()
+    music_stream_lyric.timeSignature = meter.TimeSignature('1/4')
 
     for _ in range(num_chords):  # Generating 8 random chords
         chord_name, chord_note = generate_random_chord(chord_roots, interval_dict)
         chord_note.inversion(random.choice(np.arange(len(chord_note))))
-        chord_note.lyric = chord_name
         music_stream.append(chord_note)
 
-    return music_stream
+        chord_note_lyric = chord_note
+        chord_note_lyric.lyric = chord_name
+        music_stream_lyric.append(chord_note_lyric)        
+
+    return music_stream, music_stream_lyric
 
 # Save the music stream as an image
 def save_music_stream_as_image(music_stream, file_path):
@@ -80,16 +86,26 @@ interval_dict_key_filter = st.multiselect(
 interval_dict_filter = {k:v for (k, v) in interval_dict.items() if k in interval_dict_key_filter}
 
 if st.button('Generate Chords'):
+    on = st.toggle("Show chord names")
+
     # Create a music stream
-    music_stream = create_music_stream(chord_roots=chord_roots_filter, interval_dict=interval_dict_filter, num_chords=50)
+    music_stream, music_stream_lyric = create_music_stream(chord_roots=chord_roots_filter, interval_dict=interval_dict_filter, num_chords=50)
 
     # Save the music stream as a PNG image
     folder = './output'
     filename = 'random_chords'
     image_path = f'{folder}/{filename}.png'
+    image_path_lyric = f'{folder}/{filename}_lyric.png'
     save_music_stream_as_image(music_stream, image_path)
+    save_music_stream_as_image(music_stream_lyric, image_path_lyric)
     
     # Display the image
     image_path = f'{folder}/{filename}-1.png'
-    image = Image.open(image_path)
-    st.image(image, use_column_width=True)
+    image_path_lyric = f'{folder}/{filename}_lyric-1.png'
+
+    if not on:
+        image = Image.open(image_path)
+        st.image(image, use_column_width=True)
+    else:
+        image = Image.open(image_path_lyric)
+        st.image(image, use_column_width=True)

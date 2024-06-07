@@ -86,14 +86,14 @@ interval_dict_key_filter = st.multiselect(
 
 interval_dict_filter = {k:v for (k, v) in interval_dict.items() if k in interval_dict_key_filter}
 
-# def show_image():
-#     if not st.session_state.toggle:
-#         imageLocation.image(image)
-#     else:
-#         imageLocation.image(image_lyric)
+def show_image():
+    if not st.session_state.toggle:
+        imageLocation.image(image)
+    else:
+        imageLocation.image(image_lyric)
 
-# st.toggle("Show chord names", key='toggle', on_change=show_image)
-on = st.toggle("Show chord names", key='toggle')
+st.toggle("Show chord names", key='toggle', on_change=show_image)
+# on = st.toggle("Show chord names", key='toggle')
 
 if st.button('Generate Chords'):
     # Create a music stream
@@ -114,12 +114,15 @@ if st.button('Generate Chords'):
     image = Image.open(image_path)
     image_lyric = Image.open(image_path_lyric)
 
-    if not on:
-        imageLocation = st.empty()
-        imageLocation.image(image)
-    else:
-        imageLocation = st.empty()
-        imageLocation.image(image_lyric)
+    imageLocation = st.empty()
+    imageLocation.image(image)
+
+    # if not on:
+    #     imageLocation = st.empty()
+    #     imageLocation.image(image)
+    # else:
+    #     imageLocation = st.empty()
+    #     imageLocation.image(image_lyric)
 
 
     

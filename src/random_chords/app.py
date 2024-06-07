@@ -95,15 +95,13 @@ image_path_display = f'{folder}/{filename}-1.png'
 image_path_lyric_display = f'{folder}/{filename}_lyric-1.png'
 
 
-imageLocation = st.empty()
-
 def show_image():
     if not st.session_state.toggle:
         image = Image.open(image_path_display)
-        imageLocation.image(image)
+        st.session_state.imageLocation.image(image)
     else:
         image_lyric = Image.open(image_path_lyric_display)
-        imageLocation.image(image_lyric)
+        st.session_state.imageLocation.image(image_lyric)
 
 st.toggle("Show chord names", key='toggle', on_change=show_image)
 # on = st.toggle("Show chord names", key='toggle')
@@ -117,7 +115,8 @@ if st.button('Generate Chords'):
     save_music_stream_as_image(music_stream_lyric, image_path_lyric)
     
     # Display the image
+    st.session_state.imageLocation = st.empty()
     image = Image.open(image_path_display)
-    imageLocation.image(image)
+    st.session_state.imageLocation.image(image)
 
     

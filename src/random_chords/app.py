@@ -94,6 +94,9 @@ image_path_lyric = f'{folder}/{filename}_lyric.png'
 image_path_display = f'{folder}/{filename}-1.png'
 image_path_lyric_display = f'{folder}/{filename}_lyric-1.png'
 
+
+imageLocation = st.empty()
+
 def show_image():
     if not st.session_state.toggle:
         image = Image.open(image_path_display)
@@ -114,7 +117,6 @@ if st.button('Generate Chords'):
     save_music_stream_as_image(music_stream_lyric, image_path_lyric)
     
     # Display the image
-    imageLocation = st.empty()
     image = Image.open(image_path_display)
     imageLocation.image(image)
 

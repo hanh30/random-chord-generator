@@ -86,6 +86,14 @@ interval_dict_key_filter = st.multiselect(
 
 interval_dict_filter = {k:v for (k, v) in interval_dict.items() if k in interval_dict_key_filter}
 
+def show_image():
+    if not st.session_state.toggle:
+        imageLocation.image(image)
+    else:
+        imageLocation.image(image_lyric)
+        
+st.toggle("Show chord names", key='toggle', on_change=show_image)
+
 if st.button('Generate Chords'):
     # Create a music stream
     music_stream, music_stream_lyric = create_music_stream(chord_roots=chord_roots_filter, interval_dict=interval_dict_filter, num_chords=50)
@@ -108,11 +116,7 @@ if st.button('Generate Chords'):
     imageLocation = st.empty()
     imageLocation.image(image)
 
-def show_image():
-    if not st.session_state.toggle:
-        imageLocation.image(image)
-    else:
-        imageLocation.image(image_lyric)
 
-st.toggle("Show chord names", key='toggle', on_change=show_image)
+
+
     

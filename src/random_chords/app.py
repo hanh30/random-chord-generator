@@ -96,6 +96,7 @@ image_path_lyric_display = f'{folder}/{filename}_lyric-1.png'
 
 def show_image():
     if not st.session_state.toggle:
+        imageLocation = st.empty()
         image = Image.open(image_path_display)
         imageLocation.image(image)
     else:

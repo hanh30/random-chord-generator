@@ -114,10 +114,11 @@ if st.button('Generate Chords'):
     image = Image.open(image_path)
     image_lyric = Image.open(image_path_lyric)
 
+if not on:
     imageLocation = st.empty()
     imageLocation.image(image)
-
-if on:
+else:
+    imageLocation = st.empty()
     imageLocation.image(image_lyric)
 
 

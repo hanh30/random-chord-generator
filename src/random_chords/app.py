@@ -88,8 +88,10 @@ interval_dict_filter = {k:v for (k, v) in interval_dict.items() if k in interval
 
 def show_image():
     if not st.session_state.toggle:
+        image = Image.open(image_path)
         imageLocation.image(image)
     else:
+        image_lyric = Image.open(image_path_lyric)
         imageLocation.image(image_lyric)
 
 st.toggle("Show chord names", key='toggle', on_change=show_image)
@@ -111,10 +113,8 @@ if st.button('Generate Chords'):
     image_path = f'{folder}/{filename}-1.png'
     image_path_lyric = f'{folder}/{filename}_lyric-1.png'
 
-    image = Image.open(image_path)
-    image_lyric = Image.open(image_path_lyric)
-
     imageLocation = st.empty()
+    image = Image.open(image_path)
     imageLocation.image(image)
 
     # if not on:

@@ -100,6 +100,7 @@ def show_image():
         image = Image.open(image_path_display)
         imageLocation.image(image)
     else:
+        imageLocation = st.empty()
         image_lyric = Image.open(image_path_lyric_display)
         imageLocation.image(image_lyric)
 

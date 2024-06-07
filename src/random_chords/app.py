@@ -86,12 +86,20 @@ interval_dict_key_filter = st.multiselect(
 
 interval_dict_filter = {k:v for (k, v) in interval_dict.items() if k in interval_dict_key_filter}
 
+# output path
+folder = './output'
+filename = 'random_chords'
+image_path = f'{folder}/{filename}.png'
+image_path_lyric = f'{folder}/{filename}_lyric.png'
+image_path_display = f'{folder}/{filename}-1.png'
+image_path_lyric_display = f'{folder}/{filename}_lyric-1.png'
+
 def show_image():
     if not st.session_state.toggle:
-        image = Image.open(image_path)
+        image = Image.open(image_path_display)
         imageLocation.image(image)
     else:
-        image_lyric = Image.open(image_path_lyric)
+        image_lyric = Image.open(image_path_lyric_display)
         imageLocation.image(image_lyric)
 
 st.toggle("Show chord names", key='toggle', on_change=show_image)
@@ -102,27 +110,12 @@ if st.button('Generate Chords'):
     music_stream, music_stream_lyric = create_music_stream(chord_roots=chord_roots_filter, interval_dict=interval_dict_filter, num_chords=50)
 
     # Save the music stream as a PNG image
-    folder = './output'
-    filename = 'random_chords'
-    image_path = f'{folder}/{filename}.png'
-    image_path_lyric = f'{folder}/{filename}_lyric.png'
     save_music_stream_as_image(music_stream, image_path)
     save_music_stream_as_image(music_stream_lyric, image_path_lyric)
     
     # Display the image
-    image_path = f'{folder}/{filename}-1.png'
-    image_path_lyric = f'{folder}/{filename}_lyric-1.png'
-
     imageLocation = st.empty()
-    image = Image.open(image_path)
+    image = Image.open(image_path_display)
     imageLocation.image(image)
-
-    # if not on:
-    #     imageLocation = st.empty()
-    #     imageLocation.image(image)
-    # else:
-    #     imageLocation = st.empty()
-    #     imageLocation.image(image_lyric)
-
 
     

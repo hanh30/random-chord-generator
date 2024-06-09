@@ -95,6 +95,9 @@ image_path_display = f'{folder}/{filename}-1.png'
 image_path_lyric_display = f'{folder}/{filename}_lyric-1.png'
 
 
+num_chords = st.slider("Select number of chords to generate", min_value=1, max_value=50, value=10, step=1)
+
+
 def show_image():
     if not st.session_state.toggle:
         image = Image.open(image_path_display)
@@ -108,7 +111,7 @@ st.toggle("Show chord names", key='toggle', on_change=show_image)
 
 if st.button('Generate Chords'):
     # Create a music stream
-    music_stream, music_stream_lyric = create_music_stream(chord_roots=chord_roots_filter, interval_dict=interval_dict_filter, num_chords=50)
+    music_stream, music_stream_lyric = create_music_stream(chord_roots=chord_roots_filter, interval_dict=interval_dict_filter, num_chords=num_chords)
 
     # Save the music stream as a PNG image
     save_music_stream_as_image(music_stream, image_path)

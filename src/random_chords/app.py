@@ -1,6 +1,6 @@
 import streamlit as st
 import random
-from music21 import note, interval, chord, meter, stream, environment
+from music21 import note, interval, chord, meter, stream, layout, environment
 from PIL import Image
 import os
 import numpy as np
@@ -48,7 +48,7 @@ def generate_random_chord(chord_roots, interval_dict):
     return chord_name, chord_note
 
 # Create a music stream and add random chords
-def create_music_stream(chord_roots, interval_dict, num_chords=10):
+def create_music_stream(chord_roots, interval_dict, num_chords=10, num_chords_per_line=5):
     music_stream = stream.Stream()
     music_stream.timeSignature = meter.TimeSignature('1/4')
     
@@ -62,6 +62,10 @@ def create_music_stream(chord_roots, interval_dict, num_chords=10):
         chord_note_lyric = deepcopy(chord_note)
         chord_note_lyric.lyric = chord_name
         music_stream_lyric.append(chord_note_lyric)        
+
+    for i in range(num_chords_per_line, num_chords, num_chords_per_line):
+        music_stream.insert(i, layout.SystemLayout(isNew=True))
+        music_stream_lyric.insert(i, layout.SystemLayout(isNew=True))
 
     return music_stream, music_stream_lyric
 
@@ -96,6 +100,7 @@ image_path_lyric_display = f'{folder}/{filename}_lyric-1.png'
 
 
 num_chords = st.slider("Select number of chords to generate", min_value=1, max_value=50, value=10, step=1)
+num_chords_per_line = st.slider("Select number of chords per line", min_value=1, max_value=10, value=5, step=1)
 
 
 def show_image():
@@ -111,7 +116,12 @@ st.toggle("Show chord names", key='toggle', on_change=show_image)
 
 if st.button('Generate Chords'):
     # Create a music stream
-    music_stream, music_stream_lyric = create_music_stream(chord_roots=chord_roots_filter, interval_dict=interval_dict_filter, num_chords=num_chords)
+    music_stream, music_stream_lyric = create_music_stream(
+        chord_roots=chord_roots_filter, 
+        interval_dict=interval_dict_filter, 
+        num_chords=num_chords, 
+        num_chords_per_line=num_chords_per_line
+    )
 
     # Save the music stream as a PNG image
     save_music_stream_as_image(music_stream, image_path)
